@@ -1,16 +1,16 @@
-drop function if exists hashids.hash(bigint, text, integer);
-drop function if exists hashids.hash(integer, text, integer);
+drop function if exists hashids.hash(bigint, text, boolean);
+drop function if exists hashids.hash(integer, text, boolean);
 
 CREATE OR REPLACE FUNCTION hashids.hash(
     p_input bigint,
     p_alphabet text,
-    p_zero_offset integer DEFAULT 1)
+    p_zero_offset boolean DEFAULT true)
   RETURNS text AS
 $$
 DECLARE 
     p_input ALIAS for $1;
     p_alphabet ALIAS for $2;
-    p_zero_offset ALIAS for $3; -- adding an offset so that this can work with values from a zero based array language
+    p_zero_offset integer := case when $3 = true then 1 else 0 end ; -- adding an offset so that this can work with values from a zero based array language
     v_hash varchar(255) := '';
     v_alphabet_length integer := length($2);
     v_pos integer;
@@ -38,7 +38,7 @@ $$
 CREATE OR REPLACE FUNCTION hashids.hash(
     p_input integer,
     p_alphabet text,
-    p_zero_offset integer DEFAULT 1)
+    p_zero_offset boolean DEFAULT true)
   RETURNS text AS
 $$
 DECLARE 

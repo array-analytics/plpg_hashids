@@ -1,15 +1,15 @@
-DROP FUNCTION if exists hashids.unhash(text, text, integer);
+DROP FUNCTION if exists hashids.unhash(text, text, boolean);
 
 CREATE OR REPLACE FUNCTION hashids.unhash(
     p_input text,
     p_alphabet text,
-    p_zero_offset integer DEFAULT 1)
+    p_zero_offset boolean DEFAULT true)
   RETURNS bigint AS
 $$
 DECLARE 
     p_input ALIAS for $1;
     p_alphabet ALIAS for $2;
-    p_zero_offset ALIAS for $3; -- adding an offset so that this can work with values from a zero based array language
+    p_zero_offset integer := case when $3 = true then 1 else 0 end ; -- adding an offset so that this can work with values from a zero based array language
     v_input_length integer := length($1);
     v_alphabet_length integer := length($2);
     v_ret bigint := 0;
