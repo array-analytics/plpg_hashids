@@ -12,7 +12,6 @@ DECLARE
     v_split_alphabet text[]	:= regexp_split_to_array(p_alphabet, '');
     v_i integer := 1;
     v_length integer := length(p_seps);
-    v_ret_array text[];
     v_ret text := '';
 BEGIN
 	-- had to add this function because doing this:
