@@ -52,7 +52,7 @@ BEGIN
 	-- doesn't preserve the order of the input
 	
 	for v_i in 1..v_length loop
-		raise notice 'v_split_alphabet[%]: % != %', v_i, v_split_alphabet[v_i], v_split_alphabet[v_i] <> all (v_split_seps);
+		--raise notice 'v_split_alphabet[%]: % != %', v_i, v_split_alphabet[v_i], v_split_alphabet[v_i] <> all (v_split_seps);
 		if (v_split_alphabet[v_i] <> all (v_split_seps)) then
 			v_ret = v_ret || v_split_alphabet[v_i];
 		end if;
@@ -86,7 +86,7 @@ BEGIN
 
 	-- starting at 2 because already appended 1 to it.
 	for v_i in 2..v_length loop
-		raise notice 'v_split_alphabet[%]: % != %', v_i, v_split_alphabet[v_i], v_split_alphabet[v_i] <> all (v_ret_array);
+		--raise notice 'v_split_alphabet[%]: % != %', v_i, v_split_alphabet[v_i], v_split_alphabet[v_i] <> all (v_ret_array);
 		
 		if (v_split_alphabet[v_i] <> all (v_ret_array)) then
 			v_ret_array := array_append(v_ret_array, v_split_alphabet[v_i]);
