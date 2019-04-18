@@ -32,3 +32,37 @@ You can choose to store these hashes in the database or encrypt + decrypt on the
 All integers need to be greater than or equal to zero.
 
 See [hashids.org](http://www.hashids.org/) for more information on this technique.
+
+## Usage
+
+Run the scripts in the order that they are in, in the `src` folder. Please note, that they are in their own schema (`hashids`), if you don't want that you will have to edit the scripts to remove the assumption of the `hashids` schema.
+
+#### Encoding
+Returns a hash using the default `alphabet` and empty `salt`.
+
+	SELECT hashids.encode(1001); -- Result: jNl
+
+Returns a hash using the default `alphabet` and supplied `salt`.
+
+	SELECT hashids.encode(1234567, 'This is my salt'); -- Result: Pdzxp
+
+Returns a hash using the default `alphabet`, `salt` and minimum hash length.
+	
+	SELECT hashids.encode(1234567, 'This is my salt', 10); -- Result: PlRPdzxpR7
+	
+Returns a hash using the supplied `alphabet`, `salt` and minimum hash length.
+	
+	SELECT hashids.encode(1234567, 'This is my salt', 10, 'abcdefghijABCDxFGHIJ1234567890'); -- Result: 3GJ956J9B9
+
+Returns a hash for an array of numbers.
+
+  SELECT hashids.encode_list(ARRAY[1,2,3]); -- Result: o2fXhV
+  
+#### Decoding
+You can also decode previously generated hashes. Just use the same `salt`, otherwise you'll get wrong results.
+
+	SELECT unnest(hashids.decode('PlRPdzxpR7', 'This is my salt', 10)); -- Result: 1234567
+	
+Using a custom alphabet
+
+	SELECT unnest(hashids.decode('3GJ956J9B9', 'This is my salt', 10, 'abcdefghijABCDxFGHIJ1234567890')); -- Result: 1234567
