@@ -56,7 +56,7 @@ Returns a hash using the supplied `alphabet`, `salt` and minimum hash length.
 
 Returns a hash for an array of numbers.
 
-  SELECT hashids.encode_list(ARRAY[1,2,3]); -- Result: o2fXhV
+	SELECT hashids.encode_list(ARRAY[1,2,3]); -- Result: o2fXhV
   
 #### Decoding
 You can also decode previously generated hashes. Just use the same `salt`, otherwise you'll get wrong results.
