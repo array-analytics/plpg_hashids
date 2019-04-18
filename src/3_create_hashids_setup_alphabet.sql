@@ -1,5 +1,3 @@
-drop function if exists hashids.setup_alphabet(text, text);
-
 CREATE OR REPLACE FUNCTION hashids.setup_alphabet(
     in p_salt text default '',
     inout p_alphabet text default 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890',
@@ -18,21 +16,26 @@ DECLARE
     v_seps_length integer;
     v_seps_diff integer;
 BEGIN
-  p_seps := 'cfhistuCFHISTU';
-	p_alphabet := string_agg(distinct chars.split_chars, '') from (select unnest(regexp_split_to_array(p_alphabet, '')) as split_chars) as chars;
-	-- this also doesn't preserve the order of alphabet, but it doesn't appear to matter.
+    p_seps := 'cfhistuCFHISTU';
+    -- p_alphabet := string_agg(distinct chars.split_chars, '') from (select unnest(regexp_split_to_array(p_alphabet, '')) as split_chars) as chars;
+		-- this also doesn't preserve the order of alphabet, but it doesn't appear to matter, never mind on that
+		p_alphabet := hashids.distinct_alphabet(p_alphabet);
 
-	if length(p_alphabet) < 16 then
-		RAISE EXCEPTION 'alphabet must containt 16 unique characters, it is: %', length(p_alphabet) USING HINT = 'Please check your alphabet';
-	end if;
 
-	-- seps should only contain character present in the passed alphabet
-        -- p_seps := array_to_string(ARRAY(select chars.cha from (select unnest(regexp_split_to_array(p_seps, '')) as cha intersect select unnest(regexp_split_to_array(p_alphabet, '')) as cha ) as chars order by ascii(cha) desc), '');
-        -- this doesn't preserve the input order, which is bad
-        p_seps := hashids.clean_seps_from_alphabet(p_seps, p_alphabet);
+    if length(p_alphabet) < 16 then
+        RAISE EXCEPTION 'alphabet must contain 16 unique characters, it is: %', length(p_alphabet) USING HINT = 'Please check your alphabet';
+    end if;
 
-	-- alphabet should not contain seps.
-        p_alphabet := array_to_string(ARRAY( select chars.cha from (select unnest(regexp_split_to_array(p_alphabet, '')) as cha EXCEPT select unnest(regexp_split_to_array(p_seps, '')) as cha) as chars order by ascii(cha) ), '');
+    -- seps should only contain character present in the passed alphabet
+    -- p_seps := array_to_string(ARRAY(select chars.cha from (select unnest(regexp_split_to_array(p_seps, '')) as cha intersect select unnest(regexp_split_to_array(p_alphabet, '')) as cha ) as chars order by ascii(cha) desc), '');
+    -- this doesn't preserve the input order, which is bad
+    p_seps := hashids.clean_seps_from_alphabet(p_seps, p_alphabet);
+
+    -- alphabet should not contain seps.
+    -- p_alphabet := array_to_string(ARRAY( select chars.cha from (select unnest(regexp_split_to_array(p_alphabet, '')) as cha EXCEPT select unnest(regexp_split_to_array(p_seps, '')) as cha) as chars  ), '');
+    -- this also doesn't prevserve the order
+    p_alphabet := hashids.clean_alphabet_from_seps(p_seps, p_alphabet);
+
 
 	p_seps := hashids.consistent_shuffle(p_seps, p_salt);
 
