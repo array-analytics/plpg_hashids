@@ -20,13 +20,16 @@ DECLARE
 BEGIN
   p_seps := 'cfhistuCFHISTU';
 	p_alphabet := string_agg(distinct chars.split_chars, '') from (select unnest(regexp_split_to_array(p_alphabet, '')) as split_chars) as chars;
+	-- this also doesn't preserve the order of alphabet, but it doesn't appear to matter.
 
 	if length(p_alphabet) < 16 then
 		RAISE EXCEPTION 'alphabet must containt 16 unique characters, it is: %', length(p_alphabet) USING HINT = 'Please check your alphabet';
 	end if;
 
 	-- seps should only contain character present in the passed alphabet
-	p_seps := array_to_string(ARRAY(select chars.cha from (select unnest(regexp_split_to_array(p_seps, '')) as cha intersect select unnest(regexp_split_to_array(p_alphabet, '')) as cha ) as chars order by ascii(cha) desc), '');
+  -- p_seps := array_to_string(ARRAY(select chars.cha from (select unnest(regexp_split_to_array(p_seps, '')) as cha intersect select unnest(regexp_split_to_array(p_alphabet, '')) as cha ) as chars order by ascii(cha) desc), '');
+  -- this doesn't preserve the input order, which is bad
+  p_seps := hashids.clean_seps_from_alphabet(p_seps, p_alphabet);
 
 	-- alphabet should not contain seps.
   p_alphabet := array_to_string(ARRAY( select chars.cha from (select unnest(regexp_split_to_array(p_alphabet, '')) as cha EXCEPT select unnest(regexp_split_to_array(p_seps, '')) as cha) as chars order by ascii(cha) ), '');
@@ -62,4 +65,4 @@ BEGIN
 END;
 $$
   LANGUAGE plpgsql IMMUTABLE
-  COST 100;
+  COST 200;
