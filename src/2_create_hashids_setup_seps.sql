@@ -19,13 +19,13 @@ BEGIN
 	-- doesn't preserve the order of the input
 	
 	for v_i in 1..v_length loop
-		--raise notice 'v_split_seps[%]: %  == %', v_i, v_split_seps[v_i], v_split_seps[v_i] = any (v_split_alphabet);
+		-- raise notice 'v_split_seps[%]: %  == %', v_i, v_split_seps[v_i], v_split_seps[v_i] = any (v_split_alphabet);
 		if (v_split_seps[v_i] = any (v_split_alphabet)) then
 			v_ret = v_ret || v_split_seps[v_i];
 		end if;
 	end loop;
 
-	raise notice 'v_ret: %', v_ret;
+	-- raise notice 'v_ret: %', v_ret;
 	return v_ret;
 END;
 $$
@@ -58,7 +58,7 @@ BEGIN
 		end if;
 	end loop;
 
-	raise notice 'v_ret: %', v_ret;
+	-- raise notice 'v_ret: %', v_ret;
 	return v_ret;
 END;
 $$
@@ -85,14 +85,14 @@ BEGIN
 
 	-- starting at 2 because already appended 1 to it.
 	for v_i in 2..v_length loop
-		--raise notice 'v_split_alphabet[%]: % != %', v_i, v_split_alphabet[v_i], v_split_alphabet[v_i] <> all (v_ret_array);
+		-- raise notice 'v_split_alphabet[%]: % != %', v_i, v_split_alphabet[v_i], v_split_alphabet[v_i] <> all (v_ret_array);
 		
 		if (v_split_alphabet[v_i] <> all (v_ret_array)) then
 			v_ret_array := array_append(v_ret_array, v_split_alphabet[v_i]);
 		end if;
 	end loop;
 
-	--raise notice 'v_ret_array: %', array_to_string(v_ret_array, '');
+	-- raise notice 'v_ret_array: %', array_to_string(v_ret_array, '');
 	return array_to_string(v_ret_array, '');
 END;
 $$
