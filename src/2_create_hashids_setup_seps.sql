@@ -74,7 +74,6 @@ DECLARE
     v_i integer := 2;
     v_length integer := length(p_alphabet);
     v_ret_array text[];
-    v_ret text := '';
 BEGIN
 	-- had to add this function because doing this:
 	-- p_alphabet := string_agg(distinct chars.split_chars, '') from (select unnest(regexp_split_to_array(p_alphabet, '')) as split_chars) as chars;
@@ -90,7 +89,6 @@ BEGIN
 		
 		if (v_split_alphabet[v_i] <> all (v_ret_array)) then
 			v_ret_array := array_append(v_ret_array, v_split_alphabet[v_i]);
-			--v_ret = v_ret || v_split_alphabet[v_i];
 		end if;
 	end loop;
 
