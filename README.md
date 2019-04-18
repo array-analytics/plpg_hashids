@@ -9,7 +9,7 @@ The [TSQL](https://github.com/waynebloss/hashids-tsql), [Postgres](https://githu
 
 Tested PostgreSQL versions : 9.6.X (Should work on older and newer versions, just not tested)
 
-It is done using plpgsql becuase Postgresql on Azure and AWS doesn't support creating your own extensions.
+**It was done using plpgsql becuase Postgresql on Azure and AWS doesn't support creating your own extensions.**
 
 ## What is it?
 
