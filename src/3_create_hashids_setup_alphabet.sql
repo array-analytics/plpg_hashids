@@ -27,12 +27,12 @@ BEGIN
 	end if;
 
 	-- seps should only contain character present in the passed alphabet
-  -- p_seps := array_to_string(ARRAY(select chars.cha from (select unnest(regexp_split_to_array(p_seps, '')) as cha intersect select unnest(regexp_split_to_array(p_alphabet, '')) as cha ) as chars order by ascii(cha) desc), '');
-  -- this doesn't preserve the input order, which is bad
-  p_seps := hashids.clean_seps_from_alphabet(p_seps, p_alphabet);
+        -- p_seps := array_to_string(ARRAY(select chars.cha from (select unnest(regexp_split_to_array(p_seps, '')) as cha intersect select unnest(regexp_split_to_array(p_alphabet, '')) as cha ) as chars order by ascii(cha) desc), '');
+        -- this doesn't preserve the input order, which is bad
+        p_seps := hashids.clean_seps_from_alphabet(p_seps, p_alphabet);
 
 	-- alphabet should not contain seps.
-  p_alphabet := array_to_string(ARRAY( select chars.cha from (select unnest(regexp_split_to_array(p_alphabet, '')) as cha EXCEPT select unnest(regexp_split_to_array(p_seps, '')) as cha) as chars order by ascii(cha) ), '');
+        p_alphabet := array_to_string(ARRAY( select chars.cha from (select unnest(regexp_split_to_array(p_alphabet, '')) as cha EXCEPT select unnest(regexp_split_to_array(p_seps, '')) as cha) as chars order by ascii(cha) ), '');
 
 	p_seps := hashids.consistent_shuffle(p_seps, p_salt);
 
