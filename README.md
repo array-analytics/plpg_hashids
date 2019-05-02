@@ -66,3 +66,6 @@ You can also decode previously generated hashes. Just use the same `salt`, other
 Using a custom alphabet
 
 	SELECT unnest(hashids.decode('3GJ956J9B9', 'This is my salt', 10, 'abcdefghijABCDxFGHIJ1234567890')); -- Result: 1234567
+	
+# Note
+The code and scripts are provided as is.  Array Analytics isn't responsible if anything bad happens.
