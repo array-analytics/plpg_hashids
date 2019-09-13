@@ -1,4 +1,4 @@
-drop function if exists hashids.hash(bigint, text, boolean);
+DROP FUNCTION if exists hashids.hash(bigint, text, boolean);
 
 CREATE OR REPLACE FUNCTION hashids.hash(
     p_input bigint,
