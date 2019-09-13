@@ -1,4 +1,4 @@
-drop function if exists hashids.consistent_shuffle(text, text);
+DROP FUNCTION if exists hashids.consistent_shuffle(text, text);
 
 CREATE OR REPLACE FUNCTION hashids.consistent_shuffle
 (

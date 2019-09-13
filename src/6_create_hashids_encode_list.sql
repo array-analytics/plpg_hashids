@@ -1,15 +1,15 @@
 
-drop function if exists hashids.encode_list(bigint[], text, integer, text, boolean);
-drop function if exists hashids.encode_list(bigint[], text, integer, text);
-drop function if exists hashids.encode_list(bigint[], text, integer);
-drop function if exists hashids.encode_list(bigint[], text);
-drop function if exists hashids.encode_list(bigint[]);
+DROP FUNCTION if exists hashids.encode_list(bigint[], text, integer, text, boolean);
+DROP FUNCTION if exists hashids.encode_list(bigint[], text, integer, text);
+DROP FUNCTION if exists hashids.encode_list(bigint[], text, integer);
+DROP FUNCTION if exists hashids.encode_list(bigint[], text);
+DROP FUNCTION if exists hashids.encode_list(bigint[]);
 
 
 CREATE OR REPLACE FUNCTION hashids.encode_list(
     in p_numbers bigint[],
     in p_salt text, -- DEFAULT '',
-    in p_min_hash_length, -- integer default 0,
+    in p_min_hash_length integer, -- DEFAULT 0,
     in p_alphabet text, -- DEFAULT 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890',
     in p_zero_offset boolean DEFAULT true)
   RETURNS text AS
