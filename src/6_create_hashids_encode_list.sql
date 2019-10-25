@@ -9,7 +9,7 @@ drop function if exists hashids.encode_list(bigint[]);
 CREATE OR REPLACE FUNCTION hashids.encode_list(
     in p_numbers bigint[],
     in p_salt text, -- DEFAULT '',
-    in p_min_hash_length, -- integer default 0,
+    in p_min_hash_length integer, -- default 0,
     in p_alphabet text, -- DEFAULT 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890',
     in p_zero_offset boolean DEFAULT true)
   RETURNS text AS
@@ -20,7 +20,7 @@ $$
         p_min_hash_length ALIAS for $3;
         p_alphabet ALIAS for $4;
         p_zero_offset integer := case when $5 = true then 1 else 0 end ; -- adding an offset so that this can work with values from a zero based array language
-        v_seps text; 
+        v_seps text;
         v_guards text;
 
         -- Working Data
@@ -51,7 +51,7 @@ BEGIN
     for v_lastId in 1..v_count LOOP
         v_numbersHashInt := v_numbersHashInt + (p_numbers[v_lastId] % ((v_lastId-p_zero_offset) + 100));
     END LOOP;
-    
+
     -- Choose lottery
     v_lottery := SUBSTRING(v_alphabet, (v_numbersHashInt % length(v_alphabet)) + 1, 1); -- is this a +1 because of sql 1 based index, need to double check to see if can be replaced with param.
     v_ret := v_lottery;
@@ -77,18 +77,18 @@ BEGIN
         END IF;
 
     END LOOP;
-    
+
     ----------------------------------------------------------------------------
     -- Enforce minHashLength
     ----------------------------------------------------------------------------
     IF length(v_ret) < p_min_hash_length THEN
-            
+
         ------------------------------------------------------------------------
         -- Add first 2 guard characters
         ------------------------------------------------------------------------
         v_guardIndex := (v_numbersHashInt + ascii(SUBSTRING(v_ret, 1, 1))) % length(v_guards);
         v_guard := SUBSTRING(v_guards, v_guardIndex + 1, 1);
-        --raise notice '% || % is %', v_guard, v_ret, v_guard || v_ret; 
+        --raise notice '% || % is %', v_guard, v_ret, v_guard || v_ret;
         v_ret := v_guard || v_ret;
         IF length(v_ret) < p_min_hash_length THEN
             v_guardIndex := (v_numbersHashInt + ascii(SUBSTRING(v_ret, 3, 1))) % length(v_guards);
@@ -103,7 +103,7 @@ BEGIN
             v_alphabet := hashids.consistent_shuffle(v_alphabet, v_alphabet);
             v_ret := SUBSTRING(v_alphabet, v_halfLength + 1, 255) || v_ret || SUBSTRING(v_alphabet, 1, v_halfLength);
             v_excess := length(v_ret) - p_min_hash_length;
-            IF v_excess > 0 THEN 
+            IF v_excess > 0 THEN
                 v_ret := SUBSTRING(v_ret, CAST((v_excess / 2) as int) + 1, p_min_hash_length);
             END IF;
         END LOOP;
@@ -132,7 +132,7 @@ $$
   LANGUAGE plpgsql IMMUTABLE
   COST 300;
 
-CREATE OR REPLACE FUNCTION hashids.encode_list( 
+CREATE OR REPLACE FUNCTION hashids.encode_list(
   in p_numbers bigint[],
   in p_salt text )
   RETURNS text AS
@@ -151,7 +151,7 @@ $$
   LANGUAGE plpgsql IMMUTABLE
   COST 300;
 
-CREATE OR REPLACE FUNCTION hashids.encode_list( 
+CREATE OR REPLACE FUNCTION hashids.encode_list(
   in p_numbers bigint[],
   in p_salt text,
   in p_min_hash_length integer )
@@ -170,5 +170,3 @@ END;
 $$
   LANGUAGE plpgsql IMMUTABLE
   COST 300;
-
-
