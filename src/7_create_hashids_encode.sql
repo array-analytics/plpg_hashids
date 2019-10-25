@@ -83,7 +83,7 @@ CREATE OR REPLACE FUNCTION hashids.encode(
   in p_number bigint,
   in p_salt text,
   in p_min_hash_length integer,
-  in p_alphabet text
+  in p_alphabet text,
   in p_zero_offset boolean)
   RETURNS text AS
 $$
