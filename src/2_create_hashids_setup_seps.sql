@@ -1,7 +1,7 @@
 
 create or replace function hashids.clean_seps_from_alphabet(
-	p_seps text,
-	p_alphabet text
+	in p_seps text,
+	in p_alphabet text
 )
   RETURNS text AS
 $$
@@ -33,8 +33,8 @@ $$
   COST 200;
 
 create or replace function hashids.clean_alphabet_from_seps(
-	p_seps text,
-	p_alphabet text
+	in p_seps text,
+	in p_alphabet text
 )
   RETURNS text AS
 $$
