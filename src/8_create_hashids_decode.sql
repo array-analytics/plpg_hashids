@@ -170,7 +170,7 @@ CREATE OR REPLACE FUNCTION hashids.decode(
   in p_salt text,
   in p_min_hash_length integer,
   in p_alphabet text,
-  in p_zero_offset boolean)
+  in p_zero_offset boolean DEFAULT true)
   RETURNS bigint[] AS
 $$
     DECLARE
