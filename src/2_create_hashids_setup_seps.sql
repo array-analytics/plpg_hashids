@@ -1,5 +1,5 @@
 
-create or replace function hashids.clean_seps_from_alphabet(
+CREATE OR REPLACE FUNCTION hashids.clean_seps_from_alphabet(
 	in p_seps text,
 	in p_alphabet text
 )
@@ -32,7 +32,7 @@ $$
   LANGUAGE plpgsql IMMUTABLE
   COST 200;
 
-create or replace function hashids.clean_alphabet_from_seps(
+CREATE OR REPLACE FUNCTION hashids.clean_alphabet_from_seps(
 	in p_seps text,
 	in p_alphabet text
 )

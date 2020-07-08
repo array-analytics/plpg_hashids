@@ -84,7 +84,7 @@ LANGUAGE plpgsql IMMUTABLE
   COST 200;
 
 -- setup seps
-create or replace function hashids.clean_seps_from_alphabet(
+CREATE OR REPLACE FUNCTION hashids.clean_seps_from_alphabet(
 	in p_seps text,
 	in p_alphabet text
 )
@@ -118,7 +118,7 @@ $$
   COST 200;
 
 
-create or replace function hashids.clean_alphabet_from_seps(
+CREATE OR REPLACE FUNCTION hashids.clean_alphabet_from_seps(
 	in p_seps text,
 	in p_alphabet text
 )
@@ -329,7 +329,7 @@ $$
 CREATE OR REPLACE FUNCTION hashids.encode_list(
     in p_numbers bigint[],
     in p_salt text, -- DEFAULT '',
-    in p_min_hash_length, -- integer default 0,
+    in p_min_hash_length integer, -- integer default 0,
     in p_alphabet text, -- DEFAULT 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890',
     in p_zero_offset boolean DEFAULT true)
   RETURNS text AS

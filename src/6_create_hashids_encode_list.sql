@@ -9,7 +9,7 @@ drop function if exists hashids.encode_list(bigint[]);
 CREATE OR REPLACE FUNCTION hashids.encode_list(
     in p_numbers bigint[],
     in p_salt text, -- DEFAULT '',
-    in p_min_hash_length, -- integer default 0,
+    in p_min_hash_length integer, -- integer default 0,
     in p_alphabet text, -- DEFAULT 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890',
     in p_zero_offset boolean DEFAULT true)
   RETURNS text AS
