@@ -46,7 +46,7 @@ BEGIN
 		end if;
 		if v_seps_length > length(p_seps) then
 			v_seps_diff := v_seps_length - length(p_seps);
-			p_seps := SUBSTRING(p_alphabet, 1, v_seps_diff);
+			p_seps := p_seps || SUBSTRING(p_alphabet, 1, v_seps_diff);
 			p_alphabet := SUBSTRING(p_alphabet, v_seps_diff + 1);
 		else 
 			p_seps := SUBSTRING(p_seps, 1, v_seps_length + 1);
