@@ -280,7 +280,7 @@ BEGIN
         --raise notice 'SUBSTRING(%, %, 1): %', p_alphabet, v_pos, (SUBSTRING(p_alphabet, v_pos, 1));
         --raise notice '% || % == %', SUBSTRING(p_alphabet, v_pos, 1), v_hash, SUBSTRING(p_alphabet, v_pos, 1) || v_hash;
         v_hash := SUBSTRING(p_alphabet, v_pos, 1) || v_hash;
-        p_input := CAST((p_input / v_alphabet_length) as int);
+        p_input := CAST((p_input / v_alphabet_length) as bigint);
         --raise notice 'p_input %', p_input;
         IF p_input <= 0 THEN
             EXIT;
@@ -355,7 +355,7 @@ $$
         v_count int = array_length(p_numbers, 1);
         v_i int = 0;
         v_id int = 0;
-        v_number int;
+        v_number bigint;
         v_guardIndex int;
         v_guard char(1);
         v_halfLength int;
