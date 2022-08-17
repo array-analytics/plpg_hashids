@@ -35,7 +35,7 @@ $$
         v_count int = array_length(p_numbers, 1);
         v_i int = 0;
         v_id int = 0;
-        v_number int;
+        v_number bigint;
         v_guardIndex int;
         v_guard char(1);
         v_halfLength int;
